@@ -35,6 +35,15 @@
 // 3. 在调用 loader 的时候，是从后往前调用的
 // 4. 当最后一个 loader 调用完毕，会把处理结果 直接交给 webpack 进行打包合并，最终输入到 bundle.js中
 
+// webpack 只能处理 ES6 基础语法,高级语法以及 ES7 等语法无法处理,需要安装对应的 loader
+// 通过 Babel 可以将高级的语法转换为低级语法
+// 1. 在webpack 可以安装两套包,安装 Babel相关loader
+// 1.1 cnpm i babel-core babel-loader babel-plugin-transform-runtime -D 第一套包
+// 1.2 cnpm i babel-preset-env babel-preset-stage-0 -D 第二套包
+// 2. 打开 webpack 的配置文件，在 module 节点下的 rule 数组中，添加一个新的匹配规则
+// 2.1 {text：/\.js$/,user: 'babel-loader' , exclude: /node_modules/ }
+
+
 // 1.导入Jquery
 // import *** from *** 是ES6导入模块的方法
 import $ from 'jquery'
@@ -54,6 +63,11 @@ $(function () {
         return "#" + "dddddd"
     })
 })
+
+class Person {
+    //webpack 只能处理 ES6 基础语法,高级语法以及 ES7 等语法无法处理,需要安装对应的 loader
+    static info = {name: 'zs', age: 20}
+}
 
 
 // //注意在webpack中 import Vue from 'vue' 导用的 Vue 构造函数，功能不全

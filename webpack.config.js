@@ -33,11 +33,16 @@ module.exports = {
                 // 处理的第三方loader规则
                 use: ['style-loader', 'css-loader']
             },
+
             // 配置处理 .less 文件的loader
             {test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader']},
 
             // 配置处理 .scss 文件的loader
-            {test: /\.scss/, use: ['style-loader', 'css-loader', 'sass-loader']}
+            {test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader']},
+
+            // 配置处理 url 文件的loader 小括号为了查看方便 可有可无
+            //可以在后面加 ? 传参 与 请求地址传参完全一样
+            {test: /\.(jpg|png|gif|bmp|jpng)$/, use: 'url-loader?name=[hash:8]-[name].[ext]'},
         ]
     }
 
