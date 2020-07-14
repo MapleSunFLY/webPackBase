@@ -42,45 +42,78 @@
 // 1.2 cnpm i babel-preset-env babel-preset-stage-0 -D 第二套包
 // 2. 打开 webpack 的配置文件，在 module 节点下的 rule 数组中，添加一个新的匹配规则
 // 2.1 {text：/\.js$/,user: 'babel-loader' , exclude: /node_modules/ }
+// 2.2 注意：在配置 babel 的 loader 规范的时候，必须把 node_modules 目录，通过 exclude 选项排除原因有两：
+// 2.2.1 如果不排除 node_modules，则 Banel 会把  node_modules 中所有第三方 JS 文件都打包编译，耗内存且慢
+// 2.2.2 哪怕 Babel 把所有 node_modules 中 JS 转换完毕了，但是项目也无法正常运行
+// 3. 在项目根目录中，新建一个叫 .babelre 的 babel 配置文件，这个文件，属于JSON格式，所以符合JS语法规范，不能注释，双引号
+// 3.1 在 .babelrc 中写配置 { presets:["env","stage-0"], plugins: ["transform-runtime"] }
 
 
 // 1.导入Jquery
 // import *** from *** 是ES6导入模块的方法
-import $ from 'jquery'
+// import $ from 'jquery'
+//
+// // 使用 import 语法，导入样式
+// import './css/index.css'
+// import './css/base.less'
+// import './css/base1.scss'
+//
+//
+// $(function () {
+//     //选择器设置样式yes
+//     // 偶数行
+//     $('li:odd').css('backgroundColor', 'red')
+//     // 奇数行
+//     $('li:even').css('backgroundColor', function () {
+//         return "#" + "dddddd"
+//     })
+// })
 
-// 使用 import 语法，导入样式
-import './css/index.css'
-import './css/base.less'
-import './css/base1.scss'
+// class Person {
+//     //webpack 只能处理 ES6 基础语法,高级语法以及 ES7 等语法无法处理,需要安装对应的 loader
+//     static info = {name: 'zs', age: 20}
+// }
 
 
-$(function () {
-    //选择器设置样式yes
-    // 偶数行
-    $('li:odd').css('backgroundColor', 'red')
-    // 奇数行
-    $('li:even').css('backgroundColor', function () {
-        return "#" + "dddddd"
-    })
+// 注意在webpack中 import Vue from 'vue' 导用的 Vue 构造函数，功能不全,
+// 只提供了 runtime-only 的方式，没有提供向网页的使用方法
+// import Vue from 'vue'
+
+// 包的查找规则：
+// 1. 查找项目根目录有没有 node_modules 的文件夹
+// 2. 在 node_modules 根据包名找对应的文件夹
+// 3. 在对应的文件夹，找一个 叫package.json的包配置文件
+// 4. 在 package.json 文件中，查找一个main属性【main属性指定了这个包在被加载时候的入口文件】
+
+import Vue from '../node_modules/vue/dist/vue.js'
+
+// runtime-only 不支持这样创建组件
+// var login = {
+//     terminate: '<h1> login组件</h1>'
+// }
+
+// 使用.vue的组件
+// 1.导入组件
+import login from "./login.vue";
+// 2.默认 webpack 无法打包 .vue 文件 需要安装 相关loder:
+// 3.cnpm i vue-loader vue-template-compiler -D
+// 4.新增配置项,  {test: /\.vue$/, use: ['vue-loader']},
+// 4.
+
+var vm = new Vue({
+    el: '#app',
+    data: {
+        msg: '123',
+    },
+    // render: function (createElements) {
+    //     return createElements(login)
+    // }
+    render: c => c(login),
 })
 
-class Person {
-    //webpack 只能处理 ES6 基础语法,高级语法以及 ES7 等语法无法处理,需要安装对应的 loader
-    static info = {name: 'zs', age: 20}
-}
+// 导入接收对象
+// export 必须使用花括号形式接收
+import m1, {title, content} from './text.js'
 
-
-// //注意在webpack中 import Vue from 'vue' 导用的 Vue 构造函数，功能不全
-// import Vue from 'vue'
-// // 包的查找规则：
-// // 1. 查找项目根目录有没有 node_modules 的文件夹
-// // 2. 在 node_modules 根据包名找对应的文件夹
-// // 3. 在对应的文件夹，找一个 叫package.json的包配置文件
-// // 4. 在 package.json 文件中，查找一个main属性【main属性指定了这个包在被加载时候的入口文件】
-//
-// var vm = new Vue({
-//     el: '#app',
-//     data: {
-//         msg: '123',
-//     }
-// })
+console.log(m1);
+console.log(title + "------" + content);

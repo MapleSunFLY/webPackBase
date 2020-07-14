@@ -41,8 +41,14 @@ module.exports = {
             {test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader']},
 
             // 配置处理 url 文件的loader 小括号为了查看方便 可有可无
-            //可以在后面加 ? 传参 与 请求地址传参完全一样
+            // 可以在后面加 ? 传参 与 请求地址传参完全一样
             {test: /\.(jpg|png|gif|bmp|jpng)$/, use: 'url-loader?name=[hash:8]-[name].[ext]'},
+
+            // 在配置 babel 的 loader 规范的时候，必须把 node_modules 目录
+            // {text: /\.js$/, user: 'babel-loader', exclude: /node_modules/},
+
+            // 配置处理 .vue 文件的loader
+            {test: /\.vue$/, use: 'vue-loader'},
         ]
     }
 
